@@ -220,7 +220,7 @@ class Monk {
 		$this->loader->add_action( 'current_screen', $plugin_admin, 'define_view_mode' );
 		$this->loader->add_filter( 'pre_get_posts', $plugin_admin, 'medias_modal_filter' );
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'monk_change_nav_menu_fields' );
-		$this->loader->add_action( 'wp_ajax_monk_set_language_to_elements', $plugin_admin, 'monk_set_language_to_elements' );
+		$this->loader->add_action( 'wp_ajax_monk_save_tools', $plugin_admin, 'monk_save_tools' );
 		$this->loader->add_action( 'wp_ajax_monk_save_general_form_settings', $plugin_admin, 'monk_save_general_form_settings' );
 		$this->loader->add_action( 'wp_ajax_monk_save_options', $plugin_admin, 'monk_save_site_options' );
 		add_shortcode( 'translation', array( $plugin_admin, 'monk_language_shortcode' ) );
