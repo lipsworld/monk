@@ -8,6 +8,9 @@
  * @subpackage Monk/Includes
  */
 
+require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php';
+use Google\Cloud\Translate\TranslateClient;
+
 /**
  * Validates a language code.
  * Validate if a language code value is secure to use across the application.
@@ -165,4 +168,24 @@ function monk_get_available_languages() {
 		$monk_languages[ $locale ]['slug'] = apply_filters( 'monk_custom_language_slug', $slug, $locale );
 	}
 	return $monk_languages;
+}
+
+function monk_automatic_translation_post( $post_id, $monk_id, $language, $monk_languages ) {
+	$post_obj      = get_post( $post_id );
+	$monk_language = get_post_meta( $monk_id, '_monk_post_language', true );
+
+		$monk_obj   = get_post( $monk_id );
+		$project_id = 'smiling-algebra-183520';
+		$translate  = new TranslateClient([
+			'projectId' => $project_id,
+		]);
+
+		putenv( 'GOOGLE_APPLICATION_CREDENTIALS=' . plugin_dir_path( dirname( __FILE__ ) ) . 'google-translate.json' );
+
+		$translation = $translate->translate( $monk_obj->post_content, array(
+			'target' => $language,
+		));
+
+		$post_obj->post_content = $translation['text'];
+		wp_update_post( $post_obj );
 }
