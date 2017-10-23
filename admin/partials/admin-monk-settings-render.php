@@ -25,14 +25,14 @@ if ( ! defined( 'WPINC' ) ) {
 			switch ( $the_tab ) :
 				case 'tools':
 			?>
-				<input type="hidden" name="action" value="monk_set_language_to_elements" />
-				<?php wp_nonce_field( '_monk_tools' ); ?>
+				<input type="hidden" name="action" value="monk_save_tools" />
+				<?php wp_nonce_field( '_monk_tools', '_monk_tools' ); ?>
 				<?php break; ?>
 			<?php
 			case 'options':
 			?>
 				<input type="hidden" name="action" value="monk_save_options" />
-				<?php wp_nonce_field( '_monk_site_options' ); ?>
+				<?php wp_nonce_field( '_monk_site_options', '_monk_site_options' ); ?>
 				<?php break; ?>
 			<?php
 			case 'general':
