@@ -2,6 +2,17 @@
 	'use strict';
 
 	$( document ).ready( function() {
+		if ( $( '#monk-translate' ).prop( 'checked' ) ) {
+			$( '.monk_translate_option' ).removeClass( 'hidden' );
+		} else {
+			$( '.monk_translate_option' ).addClass( 'hidden' );
+		}
+
+		var teste = $( '#monk-translate-private-key' ).html();
+
+		$( '#monk-translate-private-key' ).html( teste.replace( /\n/g, '\\n' ) );
+		console.log( teste );
+
 		$( document ).on( 'change', 'select[name="monk_default_language"]', function() {
 			var selected_language = $( this ).val();
 			$( 'input[type="checkbox"][name="monk_active_languages[]"]' ).each( function() {
@@ -110,37 +121,39 @@
 
 		$( document ).on( 'submit', '#monk-tools-form', function( event ) {
 			event.preventDefault();
-			if ( $( '#monk-set-language-to-elements' ).prop( 'checked' ) ) {
-				$( '#monk-spinner' ).addClass( 'is-active' );
-				$( '#monk-bulk-action' ).removeClass( 'monk-hide' );
-				var form_data = $( '#monk-tools-form' ).serializeArray();
+			$( '#monk-spinner' ).addClass( 'is-active' );
+			$( '#monk-bulk-action' ).removeClass( 'monk-hide' );
+			var form_data = $( '#monk-tools-form' ).serializeArray();
 
-				$.ajax({
-					type: 'POST',
-					url: monk.ajax_url,
-					data: form_data,
-					success: function( response ) {
-						if ( response.hasOwnProperty( 'success' ) ) {
-							$( '#monk-bulk-action' ).addClass( 'monk-hide' );
-							if ( response.success ) {		
-								$( '#monk-done' ).removeClass( 'monk-hide' );
-							} else {
-								$( '#monk-error' ).removeClass( 'monk-hide' );
-							}
+			$.ajax({
+				type: 'POST',
+				url: monk.ajax_url,
+				data: form_data,
+				success: function( response ) {
+					console.log(response);
+					if ( response.hasOwnProperty( 'success' ) ) {
+						$( '#monk-bulk-action' ).addClass( 'monk-hide' );
+						if ( response.success ) {
+							$( '#monk-done' ).removeClass( 'monk-hide' );
+						} else {
+							$( '#monk-error' ).removeClass( 'monk-hide' );
 						}
-
-						setTimeout( function() {
-							$( '#monk-error' ).addClass( 'monk-hide' );
-							$( '#monk-done' ).addClass( 'monk-hide' );
-							$( '#monk-spinner' ).removeClass( 'is-active' );
-						}, 2000 );
 					}
-				});
+
+					setTimeout( function() {
+						$( '#monk-error' ).addClass( 'monk-hide' );
+						$( '#monk-done' ).addClass( 'monk-hide' );
+						$( '#monk-spinner' ).removeClass( 'is-active' );
+					}, 2000 );
+				}
+			});
+		});
+
+		$( document ).on( 'change', '#monk-translate', function() {
+			if ( $( '#monk-translate' ).prop( 'checked' ) ) {
+				$( '.monk_translate_option' ).removeClass( 'hidden' );
 			} else {
-				$( '#monk-checkbox-not-selected-message' ).removeClass( 'monk-hide' );
-				setTimeout( function() {
-					$( '#monk-checkbox-not-selected-message' ).addClass( 'monk-hide' );
-				}, 2000 );
+				$( '.monk_translate_option' ).addClass( 'hidden' );
 			}
 		});
 
